@@ -7,6 +7,7 @@ import Home from "../Pages/Home";
 import AboutUs from "../Pages/AboutUs";
 import ContectUs from "../Pages/ContactUs";
 import Page404 from "../Pages/Page404";
+import Signin from "../Pages/Auth/Signin";
 
 function MainRouters(){
 
@@ -26,6 +27,7 @@ function MainRouters(){
                 <Route exact path={Path.about_us} element={<AboutUs />} />
                 <Route exact path={Path.contact} element={<ContectUs />} />
                 <Route exact path={Path.page404} element={<Page404 />} />
+                <Route exact path={Path.sign_in} element={<Signin />} />
             </Route>
         </Routes>
         

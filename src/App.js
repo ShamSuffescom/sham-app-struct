@@ -1,9 +1,43 @@
+import React, {useState, useEffect, useLayoutEffect} from 'react';
+import { Button } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import MainRouters from './Routers/MainRouters';
-import logo from './logo.svg';
+import runAxiosSetup from './Axios';
+// import logo from './logo.svg';
 import './App.css';
 
 function App() {
+  const { loggedinUser } = useSelector((state) => state.auth);
+  const token = loggedinUser?.data?.token;
+  const [isVisible, setIsVisible] = useState(false);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  const handleScroll = () => {
+    if (window.pageYOffset > 300) {
+      setIsVisible(true);
+    } else {
+      setIsVisible(false);
+    }
+  };
+
+  useLayoutEffect(() => {
+    runAxiosSetup({ token });
+  }, [token]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <div className="App">
       {/* <header className="App-header">

@@ -1,11 +1,47 @@
-import React from 'react';
+import React,{useState} from 'react';
+import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { Navbar, Nav, Container } from 'react-bootstrap';
+import { Navbar, Nav, Container, Row } from 'react-bootstrap';
 import MainRouters from '../../Routers/MainRouters';
+import {handleApiRequest} from '../../Services/handleApiRequest'
 import * as Path from '../../Routers/MainRoutersPath';
+import { HiOutlineUserCircle } from "react-icons/hi2";
+import { IoIosLogOut } from "react-icons/io";
+import DeletePopup from "../Models/deletePop";
+import {logoutUser} from "../../Redux/auth/thunk";
+
+import { Modal, Button } from 'react-bootstrap';
+
+import LoginModal from '../Models/LoginModal';
+import SignupForm from '../Models/SignupForm';
+import ForgetPasswordForm from '../Models/ForgetPasswordForm';
+import ResetPasswordForm from '../Models/ResetPasswordForm';
 
 const Header = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+
+  const { loggedinUser } = useSelector((state) => state.auth);
+  const token = loggedinUser?.data?.token;
+  const [userAction, setUserAction] = useState(null);
+
+  const [showLogin, setShowLogin] = React.useState(false);
+  const [showSignup, setShowSignup] = React.useState(false);
+  const [showForgetPassword, setShowForgetPassword] = React.useState(false);
+  const [showResetPassword, setShowResetPassword] = React.useState(false);
+
+  const handleCloseLogin = () => setShowLogin(false);
+  const handleCloseSignup = () => setShowSignup(false);
+  const handleCloseForgetPassword = () => setShowForgetPassword(false);
+  const handleCloseResetPassword = () => setShowResetPassword(false);
+  
+  const handleShowLogin = () => setShowLogin(true);
+
+  const handleLogout = async () => {
+    const response = await handleApiRequest(logoutUser);
+    if (response) {
+      navigate(Path.sign_in);
+    }
+  };
 
   return (
     <>
@@ -61,6 +97,24 @@ const Header = () => {
                 </div>
               </Nav.Link>
               <Link to={Path.contact} className="nav-item nav-link">Contact</Link>
+              
+              {loggedinUser.data?.token ? (
+                <>
+                  <HiOutlineUserCircle
+                    className="logoutIcon pointer"
+                    onClick={() => navigate(Path.home)}
+                  />
+                  <IoIosLogOut
+                    className="logoutIcon pointer"
+                    onClick={() => setUserAction("logout")}
+                  />
+                </>
+              ) : (
+                <Link to={Path.sign_in} className="nav-link login_btn">
+                  login
+                </Link>
+              )}
+
             </Nav>
             <Link to={Path.home} className="btn btn-primary py-4 px-lg-5 d-none d-lg-block">
                 Get Started<i className="fa fa-arrow-right ms-3"></i>
@@ -69,6 +123,79 @@ const Header = () => {
         </Container>
       </Navbar>
       {/* Navbar End */}
+      <Container>
+        <Row>
+        
+
+      <div className="container">
+      {/* <Button variant="primary" onClick={handleShowLogin}>Login</Button>
+      <LoginModal show={showLogin} handleClose={handleCloseLogin} /> */}
+
+      
+      {/* <Button variant="primary" onClick={() => setShowLogin(true)}>
+        Login
+      </Button> */}
+      {/* <Button variant="primary" onClick={() => setShowSignup(true)}>
+        Sign Up
+      </Button>
+      <Button variant="primary" onClick={() => setShowForgetPassword(true)}>
+        Forget Password
+      </Button>
+      <Button variant="primary" onClick={() => setShowResetPassword(true)}>
+        Reset Password
+      </Button> */}
+
+      {/* Login Modal */}
+      {/* <Modal show={showLogin} onHide={handleCloseLogin}>
+        <Modal.Header closeButton>
+          <Modal.Title>Login</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <LoginModal />
+        </Modal.Body>
+      </Modal> */}
+
+      {/* Signup Modal */}
+      <Modal show={showSignup} onHide={handleCloseSignup}>
+        <Modal.Header closeButton>
+          <Modal.Title>Sign Up</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <SignupForm />
+        </Modal.Body>
+      </Modal>
+
+      {/* Forget Password Modal */}
+      <Modal show={showForgetPassword} onHide={handleCloseForgetPassword}>
+        <Modal.Header closeButton>
+          <Modal.Title>Forget Password</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <ForgetPasswordForm />
+        </Modal.Body>
+      </Modal>
+
+      {/* Reset Password Modal */}
+      <Modal show={showResetPassword} onHide={handleCloseResetPassword}>
+        <Modal.Header closeButton>
+          <Modal.Title>Reset Password</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <ResetPasswordForm />
+        </Modal.Body>
+      </Modal>
+    </div>
+        </Row>
+      </Container>
+
+      {userAction && (
+        <DeletePopup
+          action={userAction}
+          setAction={setUserAction}
+          onSubmit={handleLogout}
+          submitLabel="Logout"
+        />
+      )}
     </>
   );
 };
