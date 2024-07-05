@@ -2,6 +2,8 @@ export const home = "/";
 export const sign_in = "/sign-in";
 export const sign_up = "/sign-up";
 export const reset_password = "/reset-password";
+export const user_profile = "/user/profile";
+export const user_logout = "/logout";
 
 export const about_us = "/about-us";
 export const find_us = "/find-us";

@@ -12,7 +12,7 @@ const LoginModal = ({ show, handleClose }) => {
     setError('');
 
     try {
-      const response = await axios.post('http://127.0.0.1:3091/api/v1/vendor/login', {
+      const response = await axios.post('http://127.0.0.1:5001/api/v1/vendor/login', {
         email,
         password
       });

@@ -12,7 +12,7 @@ const slice = createSlice({
   initialState: { ...initialState },
   reducers: {
     logout: (state, action) => {
-      return initialState;
+      state.loggedinUser = {};
     },
   },
 

@@ -1,5 +1,5 @@
 import React,{useState} from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { Navbar, Nav, Container, Row } from 'react-bootstrap';
 import MainRouters from '../../Routers/MainRouters';
@@ -7,6 +7,7 @@ import {handleApiRequest} from '../../Services/handleApiRequest'
 import * as Path from '../../Routers/MainRoutersPath';
 import { HiOutlineUserCircle } from "react-icons/hi2";
 import { IoIosLogOut } from "react-icons/io";
+import { TbUserCircle } from "react-icons/tb";
 import DeletePopup from "../Models/deletePop";
 import {logoutUser} from "../../Redux/auth/thunk";
 
@@ -16,9 +17,11 @@ import LoginModal from '../Models/LoginModal';
 import SignupForm from '../Models/SignupForm';
 import ForgetPasswordForm from '../Models/ForgetPasswordForm';
 import ResetPasswordForm from '../Models/ResetPasswordForm';
+import { logout } from '../../Redux/auth/slice';
 
 const Header = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { loggedinUser } = useSelector((state) => state.auth);
   const token = loggedinUser?.data?.token;
@@ -37,6 +40,11 @@ const Header = () => {
   const handleShowLogin = () => setShowLogin(true);
 
   const handleLogout = async () => {
+    
+    // For local stroage logout(remove data)
+    dispatch(logout())
+    
+    // For API logout
     const response = await handleApiRequest(logoutUser);
     if (response) {
       navigate(Path.sign_in);
@@ -100,19 +108,11 @@ const Header = () => {
               
               {loggedinUser.data?.token ? (
                 <>
-                  <HiOutlineUserCircle
-                    className="logoutIcon pointer"
-                    onClick={() => navigate(Path.home)}
-                  />
-                  <IoIosLogOut
-                    className="logoutIcon pointer"
-                    onClick={() => setUserAction("logout")}
-                  />
+                  <Link to={Path.user_profile} className="nav-item nav-link"><HiOutlineUserCircle className="react-icon pointer"/></Link>
+                  <Link onClick={() => setUserAction("logout")} className="nav-item nav-link"><IoIosLogOut className="react-icon pointer"/></Link>
                 </>
               ) : (
-                <Link to={Path.sign_in} className="nav-link login_btn">
-                  login
-                </Link>
+                <Link to={Path.sign_in} className="nav-item nav-link"><TbUserCircle className="react-icon pointer" /></Link>
               )}
 
             </Nav>
@@ -131,7 +131,7 @@ const Header = () => {
       {/* <Button variant="primary" onClick={handleShowLogin}>Login</Button>
       <LoginModal show={showLogin} handleClose={handleCloseLogin} /> */}
 
-      
+
       {/* <Button variant="primary" onClick={() => setShowLogin(true)}>
         Login
       </Button> */}

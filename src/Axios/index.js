@@ -1,7 +1,8 @@
 // axiosSetup.js
 import axios from "axios";
 
-const baseURL = "http://127.0.0.1:3091/api/v1/";
+// const baseURL = "http://127.0.0.1:3091/api/v1/";
+const baseURL = "http://127.0.0.1:5001/api/";
 
 export default function runAxiosSetup({ token = "", headers = {} }) {
   // Set the base URL for all axios requests

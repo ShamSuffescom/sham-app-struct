@@ -2,7 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 import '@fortawesome/fontawesome-free/css/all.min.css'
+import 'react-toastify/dist/ReactToastify.css';
 import './Assets/css/style.css'
+import './Assets/css/custom.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import './index.css';
@@ -12,6 +14,7 @@ import store, { persistor } from './Redux/store'
 import { PersistGate } from "redux-persist/integration/react";
 
 import reportWebVitals from './reportWebVitals';
+import { ToastContainer } from 'react-toastify';
 
 // const rootElement = document.getElementById('root');
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -21,8 +24,8 @@ root.render(
   // </React.StrictMode>
   <Provider store={store}>
     <PersistGate loading={"loading"} persistor={persistor}>
-      {/* <ToastContainer />
-      <LoadIndicator /> */}
+      <ToastContainer />
+      {/* <LoadIndicator /> */}
       <App />
     </PersistGate>
   </Provider>

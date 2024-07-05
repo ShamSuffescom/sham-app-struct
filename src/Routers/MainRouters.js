@@ -8,6 +8,7 @@ import AboutUs from "../Pages/AboutUs";
 import ContectUs from "../Pages/ContactUs";
 import Page404 from "../Pages/Page404";
 import Signin from "../Pages/Auth/Signin";
+import UserProfile from "../Pages/User/Profile";
 
 function MainRouters(){
 
@@ -28,6 +29,7 @@ function MainRouters(){
                 <Route exact path={Path.contact} element={<ContectUs />} />
                 <Route exact path={Path.page404} element={<Page404 />} />
                 <Route exact path={Path.sign_in} element={<Signin />} />
+                <Route exact path={Path.user_profile} element={<UserProfile />} />
             </Route>
         </Routes>
         
