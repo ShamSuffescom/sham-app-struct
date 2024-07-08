@@ -1,4 +1,4 @@
-import { logout } from "../Redux/auth/slice";
+import { logout } from "../Redux/auth/slice"
 import store from "../Redux/store";
 import { errorMsg } from "../Helpers/toastMessage";
 
@@ -10,21 +10,23 @@ export async function handleApiRequest(
 ) {
   try {
     const response = await store.dispatch(method(request)).unwrap();
-
-    if (response?.message && response?.message === "success") {
+    
+    if (response?.status && response?.status === "success") {
+      // console.log('ssss', response);
       return response;
+      // return JSON.stringify(response);
     } else {
       onError();
       showErrorToast && errorMsg(JSON.stringify(response.error));
       return {};
     }
   } catch (error) {
-    console.log("api error", error.message, error);
+    console.log("api error", error.status, error);
 
-    if (error.message === "Unauthenticated.") {
+    if (error.status === "Unauthenticated.") {
       const response = store.dispatch(logout());
     }
-    showErrorToast && errorMsg(error?.message);
+    showErrorToast && errorMsg(error?.status);
     return {};
   }
 }

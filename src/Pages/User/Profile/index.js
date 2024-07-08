@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getProfile } from '../../../Redux/profile/thunk';
 import { toast } from 'react-toastify';
@@ -10,35 +10,46 @@ import { CgLayoutGrid } from 'react-icons/cg';
 
 const UserProfile = () => {
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  
+  const [userProfile, setUserProfile] = useState({});
 
-  const handleProfile = async()=>{
+  const handleProfile = async () => {
     // try{
-    //   const details = {}
-    //   const response =await  dispatch(getProfile()).unwrap()
-
+    //   const details = {};
+    //   const response =await  dispatch(getProfile()).unwrap();
+      
     //   if(response.status==="failure"){
-    //     toast.error(response.message)
+    //     toast.error(response.message);
     //   }
-    // if(response.staus==="success"){
-    //   console.log("success")
-    // }
-    //   console.log("response", response)
+    //   if(response.status === "success"){
+    //     console.log("success");
+    //   }
+    //   // console.log("response", response);
+    //   console.log(response.status); // Log only the status field
     // }
     // catch(error){
-    //   console.log("error", error)
+    //   console.log("error", error);
+    //   toast.error(error.message);
     // }
 
 
-    const response = handleApiRequest(getProfile, )
-    if(response.staus==="success"){
-      console.log("success")
+    const response = await handleApiRequest(getProfile, );
+    // console.log('response.staus', response.status);
+    // if(response.staus==="success"){ 
+    //   console.log("success")
+    // }
+    if (response.status === "success") {
+      setUserProfile(response.data || {});
+      // console.log('response.staus', response.status);
     }
   }
 
   useEffect (()=>{
     handleProfile()
   }, [])
+
+  console.log("userProfile", userProfile);
 
   return (
     <div>
@@ -64,8 +75,8 @@ const UserProfile = () => {
             <div className="col-lg-6">
               <i className="bi bi-exclamation-triangle display-1 text-primary"></i>
               <h1 className="display-1">Profile</h1>
-              <h1 className="mb-4">User Name: </h1>
-              <p className="mb-4">Email</p>
+              <h1 className="mb-4">User Name: { userProfile.name } </h1>
+              <p className="mb-4">Email: { userProfile?.email }</p>
               <a className="btn btn-primary py-3 px-5" href="/">Go Back To Home</a>
             </div>
           </div>
