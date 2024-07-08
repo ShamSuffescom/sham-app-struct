@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import { getProfile } from '../../../Redux/profile/thunk';
 import { toast } from 'react-toastify';
 import { handleApiRequest } from '../../../Services/handleApiRequest';
 import { CgLayoutGrid } from 'react-icons/cg';
+import Path from '../../../Routers/MainRouters';
+import { Button } from 'bootstrap/dist/js/bootstrap.bundle.min';
 
 
 
@@ -11,6 +14,7 @@ import { CgLayoutGrid } from 'react-icons/cg';
 const UserProfile = () => {
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   
   const [userProfile, setUserProfile] = useState({});
 
@@ -75,9 +79,10 @@ const UserProfile = () => {
             <div className="col-lg-6">
               <i className="bi bi-exclamation-triangle display-1 text-primary"></i>
               <h1 className="display-1">Profile</h1>
-              <h1 className="mb-4">User Name: { userProfile.name } </h1>
+              <h1 className="mb-4">User Name: { userProfile?.name } </h1>
               <p className="mb-4">Email: { userProfile?.email }</p>
               <a className="btn btn-primary py-3 px-5" href="/">Go Back To Home</a>
+              {/* <Button onClick={navigate(Path.home)} >Home</Button> */}
             </div>
           </div>
         </div>
